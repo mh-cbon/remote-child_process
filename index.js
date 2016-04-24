@@ -69,6 +69,8 @@ var exec = function (cmd, options, done) {
 }
 
 module.exports = {
+  FakeChild:  FakeChild,
+  RcpClient:  RcpClient,
   RcpServer:  RcpServer,
   spawn:      spawn,
   exec:       exec
