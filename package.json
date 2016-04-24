@@ -1,0 +1,28 @@
+{
+  "name": "remote-child_process",
+  "version": "1.0.0",
+  "description": "Spawn a child_process on a remote via a server almost like a normal child_process",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "patch": "npm version patch -m \"patch %s\"",
+    "minor": "npm version minor -m \"minor %s\"",
+    "major": "npm version major -m \"major %s\"",
+    "preversion": "echo \"npm test: not defined\"",
+    "version": "echo \"npm run build: not defined\"",
+    "postversion": "git push && git push --tags && npm run public",
+    "public": "npm publish --access=public"
+  },
+  "keywords": [
+    "remote", "child_process"
+  ],
+  "author": "mh-cbon <mh-cbon@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^1.5.2",
+    "debug": "^2.2.0",
+    "split": "^1.0.0"
+  },
+  "devDependencies": {
+  }
+}
