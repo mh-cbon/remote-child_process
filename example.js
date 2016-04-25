@@ -27,8 +27,15 @@ server.open(address, function () {
       child.on('error', function (err) {
         console.log(err);
       })
+
+      child.on('exit', function () {
+        console.log("exited");
+        console.log(arguments);
+      })
+      
       child.on('close', function () {
-        console.log("closed")
+        console.log("closed");
+        console.log(arguments);
         next()
       })
     },
@@ -49,8 +56,14 @@ server.open(address, function () {
         console.log(err);
       })
 
+      child.on('exit', function () {
+        console.log("exited");
+        console.log(arguments);
+      })
+
       child.on('close', function () {
-        console.log("closed")
+        console.log("closed");
+        console.log(arguments);
         next()
       })
     },
@@ -72,8 +85,14 @@ server.open(address, function () {
         console.log(err);
       })
 
+      child.on('exit', function () {
+        console.log("exited");
+        console.log(arguments);
+      })
+
       child.on('close', function () {
-        console.log("closed")
+        console.log("closed");
+        console.log(arguments);
         next()
       })
     },
@@ -96,8 +115,14 @@ server.open(address, function () {
         console.log(err);
       })
 
+      child.on('exit', function () {
+        console.log("exited");
+        console.log(arguments);
+      })
+
       child.on('close', function () {
-        console.log("closed")
+        console.log("closed");
+        console.log(arguments);
         next()
       })
     },
@@ -120,8 +145,14 @@ server.open(address, function () {
         console.log(err);
       })
 
+      child.on('exit', function () {
+        console.log("exited");
+        console.log(arguments);
+      })
+
       child.on('close', function () {
-        console.log("closed")
+        console.log("closed");
+        console.log(arguments);
         next()
       })
     },
@@ -144,8 +175,14 @@ server.open(address, function () {
         console.log(err);
       })
 
+      child.on('exit', function () {
+        console.log("exited");
+        console.log(arguments);
+      })
+
       child.on('close', function () {
-        console.log("closed")
+        console.log("closed");
+        console.log(arguments);
         next()
       })
     }

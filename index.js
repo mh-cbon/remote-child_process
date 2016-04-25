@@ -15,7 +15,7 @@ var spawn = function (bin, args, options) {
   client.open(address, function (err) {
     if (err) {
       child.emit('error', err);
-      child.emit('close')
+      child.emit('close', -2) // unsure what i should put here.
       return ;
     }
     var runOpts = {
@@ -40,7 +40,7 @@ var exec = function (cmd, options, done) {
   client.open(address, function (err) {
     if (err) {
       child.emit('error', err);
-      child.emit('close')
+      child.emit('close', -2) // unsure what i should put here.
       return ;
     }
     var runOpts = {
