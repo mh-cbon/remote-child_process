@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Remote-child process by mh-cbon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Remote-child process</h1>
+      <h2 class="project-tagline">Spawn a child_process on a remote via a server almost like a normal child_process</h2>
+      <a href="https://github.com/mh-cbon/remote-child_process" class="btn">View on GitHub</a>
+      <a href="https://github.com/mh-cbon/remote-child_process/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/mh-cbon/remote-child_process/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="remote-child_process" class="anchor" href="#remote-child_process" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>remote-child_process</h1>
+
+<p>Spawn a child_process on a remote via a server almost like a normal child_process.</p>
+
+<h1>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h1>
+
+<div class="highlight highlight-source-shell"><pre>npm i @mh-cbon/remote-child_process --save</pre></div>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
+
+<p><strong>spawn</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Rcp         <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>@mh-cbon/remote-child_process<span class="pl-pds">'</span></span>)
+<span class="pl-k">var</span> RcpServer   <span class="pl-k">=</span> <span class="pl-smi">Rcp</span>.<span class="pl-smi">RcpServer</span>;
+
+<span class="pl-k">var</span> spawn       <span class="pl-k">=</span> <span class="pl-smi">Rcp</span>.<span class="pl-smi">spawn</span>;
+
+
+<span class="pl-k">var</span> address <span class="pl-k">=</span> {host<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>127.0.0.1<span class="pl-pds">'</span></span>, port<span class="pl-k">:</span> <span class="pl-c1">8080</span>};
+<span class="pl-k">var</span> server <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">RcpServer</span>()
+
+<span class="pl-smi">server</span>.<span class="pl-c1">open</span>(address, <span class="pl-k">function</span> () {
+  <span class="pl-k">var</span> child <span class="pl-k">=</span> <span class="pl-en">spawn</span>(<span class="pl-s"><span class="pl-pds">'</span>ls<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>-al<span class="pl-pds">'</span></span>], {bridgeAddress<span class="pl-k">:</span> address, stdio<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>pipe<span class="pl-pds">'</span></span>});
+
+  <span class="pl-smi">child</span>.<span class="pl-smi">stdout</span>.<span class="pl-en">pipe</span>(<span class="pl-c1">process</span>.<span class="pl-smi">stdout</span>);
+  <span class="pl-smi">child</span>.<span class="pl-smi">stderr</span>.<span class="pl-en">pipe</span>(<span class="pl-c1">process</span>.<span class="pl-smi">stderr</span>);
+  <span class="pl-c">// child.stdin.end('some data');</span>
+
+  <span class="pl-smi">child</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>error<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">err</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err); <span class="pl-c">// it may also throw ECONNREFUSED</span>
+  })
+
+  <span class="pl-smi">child</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>started<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">err</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>pid=%s<span class="pl-pds">"</span></span>, <span class="pl-smi">child</span>.<span class="pl-smi">pid</span>);
+  })
+
+  <span class="pl-smi">child</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>exit<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">err</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>exited<span class="pl-pds">"</span></span>);
+  })
+  <span class="pl-smi">child</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>close<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>closed<span class="pl-pds">"</span></span>)
+    <span class="pl-smi">server</span>.<span class="pl-c1">close</span>(force<span class="pl-k">=</span><span class="pl-k">!</span><span class="pl-c1">true</span>);
+  })
+})
+
+<span class="pl-k">var</span> tout <span class="pl-k">=</span> <span class="pl-c1">setTimeout</span>(<span class="pl-k">function</span> () {
+  <span class="pl-k">throw</span> <span class="pl-s"><span class="pl-pds">'</span>no client connected yet<span class="pl-pds">'</span></span>
+}, <span class="pl-c1">1500</span>)
+
+<span class="pl-smi">server</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>client_connected<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+  <span class="pl-c1">clearTimeout</span>(tout)
+})
+</pre></div>
+
+<p><strong>exec</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Rcp         <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>@mh-cbon/remote-child_process<span class="pl-pds">'</span></span>)
+<span class="pl-k">var</span> RcpServer   <span class="pl-k">=</span> <span class="pl-smi">Rcp</span>.<span class="pl-smi">RcpServer</span>;
+
+<span class="pl-k">var</span> exec        <span class="pl-k">=</span> <span class="pl-smi">Rcp</span>.<span class="pl-smi">exec</span>;
+
+
+<span class="pl-k">var</span> address <span class="pl-k">=</span> {host<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>127.0.0.1<span class="pl-pds">'</span></span>, port<span class="pl-k">:</span> <span class="pl-c1">8080</span>};
+<span class="pl-k">var</span> server <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">RcpServer</span>()
+
+<span class="pl-smi">server</span>.<span class="pl-c1">open</span>(address, <span class="pl-k">function</span> () {
+  <span class="pl-k">var</span> opts <span class="pl-k">=</span> {bridgeAddress<span class="pl-k">:</span> address};
+  <span class="pl-k">var</span> child <span class="pl-k">=</span> <span class="pl-en">exec</span>(<span class="pl-s"><span class="pl-pds">'</span>ls -al<span class="pl-pds">'</span></span>, opts, <span class="pl-k">function</span> (<span class="pl-smi">err</span>, <span class="pl-smi">stdout</span>, <span class="pl-smi">stderr</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>exec end<span class="pl-pds">"</span></span>)
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>error=%s<span class="pl-pds">"</span></span>, error);
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>stdout=%s<span class="pl-pds">"</span></span>, stdout);
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>stderr=%s<span class="pl-pds">"</span></span>, stderr);
+  });
+
+  <span class="pl-smi">child</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>error<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">err</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err); <span class="pl-c">// it may also throw ECONNREFUSED</span>
+  })
+
+  <span class="pl-smi">child</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>started<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">err</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>pid=%s<span class="pl-pds">"</span></span>, <span class="pl-smi">child</span>.<span class="pl-smi">pid</span>);
+  })
+
+  <span class="pl-smi">child</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>exit<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">err</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>exited<span class="pl-pds">"</span></span>);
+  })
+  <span class="pl-smi">child</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>close<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>closed<span class="pl-pds">"</span></span>)
+    <span class="pl-smi">server</span>.<span class="pl-c1">close</span>(force<span class="pl-k">=</span><span class="pl-k">!</span><span class="pl-c1">true</span>);
+  })
+})
+
+<span class="pl-k">var</span> tout <span class="pl-k">=</span> <span class="pl-c1">setTimeout</span>(<span class="pl-k">function</span> () {
+  <span class="pl-k">throw</span> <span class="pl-s"><span class="pl-pds">'</span>no client connected yet<span class="pl-pds">'</span></span>
+}, <span class="pl-c1">1500</span>)
+
+<span class="pl-smi">server</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>client_connected<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+  <span class="pl-c1">clearTimeout</span>(tout)
+})
+</pre></div>
+
+<ul>
+<li>
+<code>pid</code> and <code>methods call</code> are available after <code>started</code> event has emit</li>
+<li>on network failure, it throw error on the child</li>
+<li>the remote process is <strong>not</strong> running a TTY, so it may be a bit different</li>
+<li>
+<code>cwd</code> is always forwarded and set appropriately</li>
+</ul>
+
+<h1>
+<a id="why" class="anchor" href="#why" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why</h1>
+
+<p>It is used to spawn process on windows with elevated privileges, see <a href="https://github.com/mh-cbon/aghfabsowecwn">here</a></p>
+
+<h1>
+<a id="todos" class="anchor" href="#todos" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Todos</h1>
+
+<ul>
+<li>write tests</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/mh-cbon/remote-child_process">Remote-child process</a> is maintained by <a href="https://github.com/mh-cbon">mh-cbon</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
