@@ -1,11 +1,11 @@
-# remote-Child_process
+# remote-child_process
 
 Spawn a child_process on a remote via a server almost like a normal child_process.
 
 # Install
 
 ```sh
-npm i @mh-cbon/remote-Child_process --save
+npm i @mh-cbon/remote-child_process --save
 ```
 
 # Usage
