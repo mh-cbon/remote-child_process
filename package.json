@@ -1,6 +1,6 @@
 {
   "name": "@mh-cbon/remote-child_process",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Spawn a child_process on a remote via a server almost like a normal child_process",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,8 @@
     "public": "npm publish --access=public"
   },
   "keywords": [
-    "remote", "child_process"
+    "remote",
+    "child_process"
   ],
   "author": "mh-cbon <mh-cbon@users.noreply.github.com>",
   "license": "MIT",
@@ -23,6 +24,5 @@
     "debug": "^2.2.0",
     "split": "^1.0.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
