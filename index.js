@@ -20,7 +20,6 @@ var spawn = function (bin, args, options) {
     }
     var runOpts = {
       mode:     'spawn',
-      address:  address,
       bin:      bin,
       args:     args
     }
@@ -45,7 +44,6 @@ var exec = function (cmd, options, done) {
     }
     var runOpts = {
       mode:     'exec',
-      address:  address,
       cmd:      cmd
     }
     client.runRemote(child, runOpts, options);

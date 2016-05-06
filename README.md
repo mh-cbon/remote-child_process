@@ -109,6 +109,38 @@ server.on('client_connected', function () {
 - the remote process is __not__ running a TTY, so it may be a bit different
 - `cwd` is always forwarded and set appropriately
 
+### About the server
+
+The server expose `open` and `close` method as expected.
+
+Note that two alternative methods exists to close it.
+
+__via a socket__
+
+If you connect a socket on the server and send it a JSON packet
+
+```json
+{
+  "type": "close",
+  "force": true
+}
+```
+
+The close sequence will be invoked.
+
+__via a file__
+
+Alternatively it is possible to tell the server to watch for a specific file,
+containing a specific token to invoke its close sequence.
+
+```js
+
+var server = ....
+
+server.enableFileToQuit('file to watch', 'token to find in the file')
+
+```
+
 # Why
 
 It is used to spawn process on windows with elevated privileges, see [here](https://github.com/mh-cbon/aghfabsowecwn)
