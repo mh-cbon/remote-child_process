@@ -1,6 +1,6 @@
 {
   "name": "@mh-cbon/remote-child_process",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Spawn a child_process on a remote via a server almost like a normal child_process",
   "main": "index.js",
   "scripts": {
