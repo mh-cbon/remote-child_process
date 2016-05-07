@@ -145,6 +145,16 @@ server.enableFileToQuit('file to watch', 'token to find in the file')
 
 It is used to spawn process on windows with elevated privileges, see [here](https://github.com/mh-cbon/aghfabsowecwn)
 
-# Todos
+# Running the tests
 
-- write tests
+To run the tests,
+
+```sh
+mocha
+```
+
+To run the tests against node.child_process api
+
+```sh
+LOCAL=true mocha
+```

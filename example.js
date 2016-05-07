@@ -32,7 +32,7 @@ server.open(address, function () {
         console.log("exited");
         console.log(arguments);
       })
-      
+
       child.on('close', function () {
         console.log("closed");
         console.log(arguments);
@@ -44,6 +44,9 @@ server.open(address, function () {
 
       var child = spawn('nop', ['-al'], {bridgeAddress: address, stdio: 'pipe'});
 
+      child.stdin.on('error', function () {});
+      child.stdout.on('error', function () {});
+      child.stderr.on('error', function () {});
       child.stdout.pipe(process.stdout);
       child.stderr.pipe(process.stderr);
 
@@ -53,7 +56,7 @@ server.open(address, function () {
       })
 
       child.on('error', function (err) {
-        console.log(err);
+        // console.log(err);
       })
 
       child.on('exit', function () {
@@ -103,8 +106,7 @@ server.open(address, function () {
 
       child.stdout.pipe(process.stdout);
       child.stderr.pipe(process.stderr);
-      child.stdin.write('what ever');
-      child.stdin.end();
+      child.stdin.end('what ever');
 
       child.on('started', function () {
         console.log('started');
